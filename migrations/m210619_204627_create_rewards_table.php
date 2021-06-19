@@ -17,6 +17,7 @@ class m210619_204627_create_rewards_table extends Migration
             'points' => $this->integer(),
             'amount' => $this->decimal(9,2),
             'status' => $this->tinyInteger(1),
+            'expiry_date' => $this->date(),
             'order_id' => $this->integer()->notNull(),
             'created_date' => $this->timestamp(),
             'modified_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
