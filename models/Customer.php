@@ -62,4 +62,14 @@ class Customer extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Currency::className(), ['id' => 'currency_id']);
     }
+
+    public function getOrders()
+    {
+        return $this->hasMany(Order::className(), ['customer_id' => 'id']);
+    }
+
+    public function getRewards()
+    {
+        return $this->hasMany(Reward::className(), ['order_id' => 'id'])->via('orders');
+    }
 }
