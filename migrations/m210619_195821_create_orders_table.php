@@ -28,7 +28,8 @@ class m210619_195821_create_orders_table extends Migration
             'orders',
             'customer_id',
             'customers',
-            'id'
+            'id',
+            'CASCADE'
         );
     }
 
