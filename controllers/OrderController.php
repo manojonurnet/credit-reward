@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Order;
 use app\models\Customer;
+use app\models\Reward;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -71,6 +72,10 @@ class OrderController extends Controller
         $customers = ArrayHelper::map(Customer::find()->all(), 'id', 'email');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->status) {
+                $this->createReward($model);
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -94,6 +99,14 @@ class OrderController extends Controller
         $customers = ArrayHelper::map(Customer::find()->all(), 'id', 'email');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->status) {
+                // Check if reward exists
+                $reward_count = Reward::find()->where(['order_id' => $model->id])->count();
+
+                if (! $reward_count) {
+                    $this->createReward($model);
+                }   
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -131,5 +144,17 @@ class OrderController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function createReward($model)
+    {
+        $reward = new Reward([
+            'points' => floor($model->price),
+            'amount' => floor($model->price) * 0.01,
+            'status' => 1,
+            'expiry_date' => date('Y-m-d', strtotime('+1 year')),
+            'order_id' => $model->id,
+        ]);
+        $reward->save();
     }
 }
