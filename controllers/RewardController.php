@@ -44,10 +44,11 @@ class RewardController extends Controller
      * Lists all Reward models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($customer_id = null)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Reward::find(),
+            'query' => $customer_id ? 
+                Reward::find()->joinWith('order')->where(['orders.customer_id' => $customer_id]) : Reward::find()
         ]);
 
         return $this->render('index', [
