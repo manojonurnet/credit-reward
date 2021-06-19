@@ -38,6 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->customer->email,
             ],
             'sale_amount',
+            [
+                'attribute' => 'status',
+                'label' => 'Status',
+                'value' => $model->status ? 'Complete' : 'Pending',
+            ],
+            'created_date',
         ],
     ]) ?>
 

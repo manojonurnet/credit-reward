@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sale_amount')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'status')->dropdownList(['0'=>'Pending', '1'=>'Complete']) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

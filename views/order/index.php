@@ -34,7 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'sale_amount',
-            //'created_date',
+            [
+                'label' => 'Status',
+                'value' => function($model) {
+                    return $model->status ? 'Complete' : 'Pending';
+                }
+            ],
+            'created_date',
             //'modified_date',
 
             ['class' => 'yii\grid\ActionColumn'],

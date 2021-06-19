@@ -18,6 +18,7 @@ class m210619_195821_create_orders_table extends Migration
             'price' => $this->decimal(9,2)->notNull(),
             'customer_id' => $this->integer()->notNull(),
             'sale_amount' => $this->decimal(9,2)->notNull(),
+            'status' => $this->tinyInteger(1)->defaultValue(0),
             'created_date' => $this->timestamp(),
             'modified_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
