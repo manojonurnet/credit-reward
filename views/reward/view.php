@@ -29,14 +29,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            // 'id',
+            [
+                'label' => 'Customer',
+                'value' => function($model) {
+                    return $model->order->customer->name;
+                }
+            ],
             'points',
             'amount',
-            'status',
+            [
+                'label' => 'Status',
+                'value' => function($model) {
+                    return $model->status ? 'Active' : 'Expired';
+                }
+            ],
             'expiry_date',
-            'order_id',
+            // 'order_id',
             'created_date',
-            'modified_date',
+            // 'modified_date',
         ],
     ]) ?>
 

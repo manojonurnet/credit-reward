@@ -24,10 +24,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
+            [
+                'label' => 'Customer',
+                'value' => function($model) {
+                    return $model->order->customer->name;
+                }
+            ],
             'points',
             'amount',
-            'status',
+            [
+                'label' => 'Status',
+                'value' => function($model) {
+                    return $model->status ? 'Active' : 'Expired';
+                }
+            ],
             'expiry_date',
             //'order_id',
             //'created_date',

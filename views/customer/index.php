@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -33,7 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->currency->code;
                 }
             ],
-            'reward',
+            [
+                'label' => 'Reward',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return $model->reward ?
+                    Html::a(
+                        $model->reward . ' (equivalent to USD ' . $model->reward * 0.01 . ')',
+                        Url::to(['reward/index', 'customer_id' => $model->id])
+                    ) : 'Not reward points available';
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
