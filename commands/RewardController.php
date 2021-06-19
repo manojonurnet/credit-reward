@@ -21,8 +21,8 @@ class RewardController extends Controller
     {
         $customers = Customer::find()->all();
         
-        $rewards = 0;
         foreach ($customers as $customer) {
+            $rewards = 0;
             foreach ($customer->rewards as $reward) {
                 if ($reward->expiry_date <= date('Y-m-d')) {
                     $reward->status = 0;
