@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -46,6 +47,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'created_date',
+            [
+                'attribute' => 'default',
+                'label' => 'Order action',
+                'format' => 'html',
+                'value' => function($model, $index, $dataColumn) {
+                    return 
+                    $model->status ?
+                    'No action required'
+                    :
+                    ($model->customer->reward && ($model->customer->reward * 0.01 >= $model->sale_amount / $model->currency->value) ? 
+                    Html::a(
+                        'Pay with reward points',
+                        Url::to(['order/pay', 'id' => $model->id, 'reward' => true]),
+                        ['class' => 'badge badge-info']
+                    ) 
+                    . '&nbsp;&nbsp;' . 
+                    Html::a(
+                        'Pay',
+                        Url::to(['order/pay', 'id' => $model->id]),
+                        ['class' => 'badge badge-info']
+                    ) : 
+                    Html::a(
+                        'Pay',
+                        Url::to(['order/pay', 'id' => $model->id]),
+                        ['class' => 'badge badge-info']
+                    ));
+                },
+            ],
             //'modified_date',
 
             ['class' => 'yii\grid\ActionColumn'],

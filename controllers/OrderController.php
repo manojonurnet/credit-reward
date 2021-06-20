@@ -7,6 +7,7 @@ use app\models\Order;
 use app\models\Customer;
 use app\models\Currency;
 use app\models\Reward;
+use app\models\Claim;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -75,10 +76,6 @@ class OrderController extends Controller
         $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->status) {
-                $this->createReward($model);
-            }
-
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -105,14 +102,6 @@ class OrderController extends Controller
         $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->status) {
-                // Check if reward exists
-                $reward_count = Reward::find()->where(['order_id' => $model->id])->count();
-
-                if (! $reward_count) {
-                    $this->createReward($model);
-                }   
-            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -121,6 +110,37 @@ class OrderController extends Controller
             'customers' => $customers,
             'currencies' => $currencies,
         ]);
+    }
+
+    public function actionPay($id, $reward = false)
+    {
+        $model = $this->findModel($id);
+
+        if ($reward) {
+            if ($model->customer->reward && ($model->customer->reward * 0.01 >= $model->sale_amount / $model->currency->value)) {
+                $reward_to_deduct = 100 * $model->sale_amount / $model->currency->value;
+
+                $claim = new Claim([
+                    'order_id' => $model->id,
+                    'points' => $reward_to_deduct
+                ]);
+
+                $claim->save();
+            }
+        }
+
+        $model->status = 1;
+        $model->save();
+
+        $reward_count = Reward::find()->where(['order_id' => $model->id])->count();
+
+        if (! $reward_count) {
+            $this->createReward($model);
+        }
+
+        $this->updateReward($model);
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -165,5 +185,26 @@ class OrderController extends Controller
             'order_id' => $model->id,
         ]);
         $reward->save();
+    }
+
+    protected function updateReward($model)
+    {
+        $rewards = 0;
+        $claims = 0;
+        foreach ($model->customer->rewards as $reward) {
+            if ($reward->expiry_date <= date('Y-m-d')) {
+                $reward->status = 0;
+                $reward->save();
+            } else {
+                $rewards += $reward->points;
+            }
+        }
+
+        foreach ($model->customer->claims as $claim) {
+            $claims += $claim->points;
+        }
+
+        $model->customer->reward = $rewards - $claims;
+        $model->customer->save();
     }
 }

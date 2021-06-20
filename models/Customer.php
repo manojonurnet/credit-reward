@@ -64,4 +64,9 @@ class Customer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Reward::className(), ['order_id' => 'id'])->via('orders');
     }
+
+    public function getClaims()
+    {
+        return $this->hasMany(Claim::className(), ['order_id' => 'id'])->via('orders');
+    }
 }

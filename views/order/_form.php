@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'currency_id')->dropdownList($currencies) ?>
 
-    <?= $form->field($model, 'status')->dropdownList(['0'=>'Pending', '1'=>'Complete']) ?>
+    <?php // $form->field($model, 'status')->dropdownList(['0'=>'Pending', '1'=>'Complete']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

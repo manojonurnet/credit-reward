@@ -23,6 +23,9 @@ class RewardController extends Controller
         
         foreach ($customers as $customer) {
             $rewards = 0;
+            $claims = 0;
+
+            // Collect all valid rewards
             foreach ($customer->rewards as $reward) {
                 if ($reward->expiry_date <= date('Y-m-d')) {
                     $reward->status = 0;
@@ -32,7 +35,12 @@ class RewardController extends Controller
                 }
             }
 
-            $customer->reward = $rewards;
+            // Collect all claims
+            foreach ($customer->claims as $claim) {
+                $claims += $claim->points;
+            }
+
+            $customer->reward = $rewards - $claims;
             $customer->save();
         }
 
