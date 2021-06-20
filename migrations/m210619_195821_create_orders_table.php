@@ -14,13 +14,13 @@ class m210619_195821_create_orders_table extends Migration
     {
         $this->createTable('{{%orders}}', [
             'id' => $this->primaryKey(),
-            'product' => $this->string(512)->notNull(),
-            'price' => $this->decimal(9,2)->notNull(),
+            'detail' => $this->string(512)->notNull(),
             'customer_id' => $this->integer()->notNull(),
             'sale_amount' => $this->decimal(9,2)->notNull(),
+            'currency_id' => $this->integer()->notNull(),
             'status' => $this->tinyInteger(1)->defaultValue(0),
-            'created_date' => $this->timestamp(),
-            'modified_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->append('ON UPDATE CURRENT_TIMESTAMP')
         ]);
 
         $this->addForeignKey(
@@ -30,6 +30,14 @@ class m210619_195821_create_orders_table extends Migration
             'customers',
             'id',
             'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-orders-currency_id',
+            'orders',
+            'currency_id',
+            'currencies',
+            'id'
         );
     }
 
@@ -42,6 +50,12 @@ class m210619_195821_create_orders_table extends Migration
             'fk-orders-customer_id',
             'orders',
         );
+
+        $this->dropForeignKey(
+            'fk-orders-currency_id',
+            'orders',
+        );
+
         $this->dropTable('{{%orders}}');
     }
 }

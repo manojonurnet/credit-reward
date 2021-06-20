@@ -19,8 +19,8 @@ class m210619_204627_create_rewards_table extends Migration
             'status' => $this->tinyInteger(1),
             'expiry_date' => $this->date(),
             'order_id' => $this->integer()->notNull(),
-            'created_date' => $this->timestamp(),
-            'modified_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->append('ON UPDATE CURRENT_TIMESTAMP')
         ]);
 
         $this->addForeignKey(

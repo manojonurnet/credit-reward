@@ -16,17 +16,10 @@ class m210619_190837_create_customers_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(128)->notNull(),
             'email' => $this->string(128)->notNull()->unique(),
-            'currency_id' => $this->integer()->notNull(),
             'reward' => $this->integer(),
+            'created_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->append('ON UPDATE CURRENT_TIMESTAMP')
         ]);
-
-        $this->addForeignKey(
-            'fk-customer-currency_id',
-            'customers',
-            'currency_id',
-            'currencies',
-            'id'
-        );
     }
 
     /**
@@ -34,10 +27,6 @@ class m210619_190837_create_customers_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey(
-            'fk-customer-currency_id',
-            'customers',
-        );
         $this->dropTable('{{%customers}}');
     }
 }

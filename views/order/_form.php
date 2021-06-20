@@ -12,13 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'product')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'detail')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'customer_id')->dropdownList($customers) ?>
 
     <?= $form->field($model, 'sale_amount')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'currency_id')->dropdownList($currencies) ?>
 
     <?= $form->field($model, 'status')->dropdownList(['0'=>'Pending', '1'=>'Complete']) ?>
 

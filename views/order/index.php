@@ -24,9 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'product',
-            'price',
+            // 'id',
+            'detail',
             [
                 'label' => 'Customer',
                 'value' => function($model) {
@@ -34,6 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'sale_amount',
+            [
+                'label' => 'Currency',
+                'value' => function($model) {
+                    return $model->currency->code;
+                }
+            ],
             [
                 'label' => 'Status',
                 'value' => function($model) {

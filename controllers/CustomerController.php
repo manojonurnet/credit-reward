@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Customer;
-use app\models\Currency;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -68,15 +67,12 @@ class CustomerController extends Controller
     {
         $model = new Customer();
 
-        $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'currencies' => $currencies,
         ]);
     }
 
@@ -91,15 +87,12 @@ class CustomerController extends Controller
     {
         $model = $this->findModel($id);
 
-        $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'currencies' => $currencies,
         ]);
     }
 

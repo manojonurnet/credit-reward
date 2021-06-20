@@ -30,8 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'product',
-            'price',
+            'detail',
             [
                 'attribute' => 'customer_id',
                 'label' => 'Customer',
@@ -42,6 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'label' => 'Status',
                 'value' => $model->status ? 'Complete' : 'Pending',
+            ],
+            [
+                'attribute' => 'currency_id',
+                'label' => 'Currency',
+                'value' => $model->currency->code,
             ],
             'created_date',
         ],

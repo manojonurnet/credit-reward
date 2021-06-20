@@ -25,15 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'name',
             'email:email',
-            [
-                'label' => 'Currency',
-                'value' => function($model) {
-                    return $model->currency->code;
-                }
-            ],
             [
                 'label' => 'Reward',
                 'format' => 'raw',
@@ -45,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ) : 'Not reward points available';
                 }
             ],
+            'created_date',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

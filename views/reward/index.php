@@ -41,8 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'expiry_date',
             //'order_id',
-            //'created_date',
-            //'modified_date',
+            'created_date',
+            'updated_date',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -16,9 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'currency_id')->dropdownList($currencies) ?>
-
-    <?= $form->field($model, 'reward')->textInput() ?>
+    <?php // $form->field($model, 'reward')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

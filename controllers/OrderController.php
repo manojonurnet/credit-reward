@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Order;
 use app\models\Customer;
+use app\models\Currency;
 use app\models\Reward;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -71,6 +72,8 @@ class OrderController extends Controller
 
         $customers = ArrayHelper::map(Customer::find()->all(), 'id', 'email');
 
+        $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($model->status) {
                 $this->createReward($model);
@@ -82,6 +85,7 @@ class OrderController extends Controller
         return $this->render('create', [
             'model' => $model,
             'customers' => $customers,
+            'currencies' => $currencies,
         ]);
     }
 
@@ -98,6 +102,8 @@ class OrderController extends Controller
 
         $customers = ArrayHelper::map(Customer::find()->all(), 'id', 'email');
 
+        $currencies = ArrayHelper::map(Currency::find()->all(), 'id', 'code');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($model->status) {
                 // Check if reward exists
@@ -113,6 +119,7 @@ class OrderController extends Controller
         return $this->render('update', [
             'model' => $model,
             'customers' => $customers,
+            'currencies' => $currencies,
         ]);
     }
 
@@ -148,9 +155,11 @@ class OrderController extends Controller
 
     protected function createReward($model)
     {
+        $sales_amount_in_usd = $model->currency->code == 'USD' ? $model->sale_amount : $model->sale_amount / $model->currency->value;
+
         $reward = new Reward([
-            'points' => floor($model->price),
-            'amount' => floor($model->price) * 0.01,
+            'points' => floor($sales_amount_in_usd),
+            'amount' => floor($sales_amount_in_usd) * 0.01,
             'status' => 1,
             'expiry_date' => date('Y-m-d', strtotime('+1 year')),
             'order_id' => $model->id,

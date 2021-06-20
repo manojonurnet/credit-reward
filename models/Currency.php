@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string $code
  * @property float $value
+ * @property string $created_date
+ * @property string $modified_date
  */
 class Currency extends \yii\db\ActiveRecord
 {
@@ -31,6 +33,7 @@ class Currency extends \yii\db\ActiveRecord
             [['value'], 'number'],
             [['code'], 'string', 'max' => 3],
             [['code'], 'unique'],
+            [['created_date', 'modified_date'], 'safe'],
         ];
     }
 
@@ -43,6 +46,8 @@ class Currency extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'value' => 'Value',
+            'created_date' => 'Created Date',
+            'modified_date' => 'Modified Date',
         ];
     }
 }

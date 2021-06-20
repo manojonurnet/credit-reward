@@ -10,8 +10,9 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property int|null $currency_id
  * @property int|null $reward
+ * @property string $created_date
+ * @property string $modified_date
  *
  * @property Currency $currency
  */
@@ -32,10 +33,10 @@ class Customer extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'email'], 'required'],
-            [['currency_id', 'reward'], 'integer'],
+            [['reward'], 'integer'],
             [['name', 'email'], 'string', 'max' => 128],
             [['email'], 'unique'],
-            [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
+            [['created_date', 'modified_date'], 'safe'],
         ];
     }
 
@@ -48,19 +49,10 @@ class Customer extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'email' => 'Email',
-            'currency_id' => 'Currency ID',
             'reward' => 'Reward',
+            'created_date' => 'Created Date',
+            'modified_date' => 'Modified Date',
         ];
-    }
-
-    /**
-     * Gets query for [[Currency]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCurrency()
-    {
-        return $this->hasOne(Currency::className(), ['id' => 'currency_id']);
     }
 
     public function getOrders()

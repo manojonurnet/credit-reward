@@ -33,11 +33,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'email:email',
             [
-                'attribute' => 'currency_id',
-                'label' => 'Currency',
-                'value' => $model->currency->code,
+                'label' => 'Reward',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return $model->reward ?
+                    Html::a(
+                        $model->reward . ' (equivalent to USD ' . $model->reward * 0.01 . ')',
+                        Url::to(['reward/index', 'customer_id' => $model->id])
+                    ) : 'Not reward points available';
+                }
             ],
-            'reward',
+            'created_date',
         ],
     ]) ?>
 
