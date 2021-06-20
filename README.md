@@ -20,7 +20,7 @@ Clone the project using the following command:
 git clone {git_url}
 ~~~
 
-Install the dependencies using the following command:
+After cloning, cd into the project folder and install the dependencies using the following command:
 
 ~~~
 composer install
@@ -69,6 +69,7 @@ php yii reward
 ~~~
 This command calculates and updates rewards for all customers, as well as checks for expired rewards.
 
+To test, you may add orders, and then run the above command to see the credits updated in customer table.
 
 **NOTES:**
 - Yii won't create the database for you, this has to be done manually before you can access it.
