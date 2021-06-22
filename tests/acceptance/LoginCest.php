@@ -18,4 +18,18 @@ class LoginCest
         $I->expectTo('see user info');
         $I->see('Logout');
     }
+
+    public function ensureThatLoginDoesNotWorkWithIncorrectCredentials(AcceptanceTester $I)
+    {
+        $I->amOnPage(Url::toRoute('/site/login'));
+        $I->see('Login', 'h1');
+
+        $I->amGoingTo('try to login with incorrect credentials');
+        $I->fillField('input[name="LoginForm[username]"]', 'admin');
+        $I->fillField('input[name="LoginForm[password]"]', 'mike');
+        $I->click('login-button');
+        $I->wait(2); // wait for button to be clicked
+
+        $I->see('Incorrect username or password.');
+    }
 }
